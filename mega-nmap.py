@@ -1,6 +1,7 @@
 import os
 import subprocess
 import xlwt
+import csv
 
 # Function to check if host is up
 def is_host_up(ip_address):
@@ -44,3 +45,15 @@ for ip_address in ip_addresses:
 
 # Save Excel file
 workbook.save("output.xls")
+# Create CSV file
+with open("output.csv", "w") as output_file:
+    writer = csv.writer(output_file)
+
+    # Write header row
+    writer.writerow(["IP Address", "Open Ports"])
+
+    # Write data rows
+    for ip_address in ip_addresses:
+        if is_host_up(ip_address):
+            open_ports = scan_ports(ip_address)
+            writer.writerow([ip_address, ", ".join(open_ports)])
